@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: 
+Sitemap: http://ifibe.com/sitemap-2018.xml
