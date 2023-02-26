@@ -1,0 +1,45 @@
+{
+	"head": {
+		"title": "逐风揽月",
+		"description": "Author:Karan,Category:HUB",
+		"favicon": "favicon.ico"
+	},
+	"intro": {
+		"title": "HUB.srto",
+		"subtitle": "No one will really watch this anyway",
+		"enter": "enter",
+		"supportAuthor": false,
+		"background": true
+	},
+	"main": {
+		"name": "Karan",
+		"signature": "Thinking & Almost there & Forget it",
+		"avatar": {
+			"link": "assets/avatar.jpg",
+			"height": "100",
+			"width": "100"
+		},
+		"ul": {
+			"first": {
+				"href": "https://srto.win/",
+				"icon": "buildings_castle",
+				"text": "Blog"
+			},
+			"second": {
+				"href": "https://pan.srto.win",
+				"icon": "-panda",
+				"text": "About"
+			},
+			"third": {
+				"href": "mailto:blog@srto.win",
+				"icon": "send-email-",
+				"text": "Email"
+			},
+			"fourth": {
+				"href": "https://github.com/useblue",
+				"icon": "github",
+				"text": "Github"
+			}
+		}
+	}
+}
