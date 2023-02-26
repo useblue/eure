@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ASFCryptoPW</title>
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.min.js"></script>
+  <style>
+    body{ text-align:center} 
+    #box{margin:0 auto;border:1px solid #9f79ee;width:500px;height:100px} 
+    </style>
+</head>
+
+<body>
+  <div id="box" >
+  <div>password:
+    <input id="password" type="text">
+  </div>
+  <div>cryptkey:
+    <input id="cryptkey" type="text">
+  </div>
+  <div>encrypt:
+    <input id="encrypt" type="text">
+  </div>
+  <input type="button" value="encrypt" onclick="encryptClick()">
+  <input type="button" value="decrypt" onclick="decryptClick()">
+  </div>
+  <script>
+    const inputPassword = document.querySelector('#password')
+    const inputCryptkey = document.querySelector('#cryptkey')
+    const inputEncrypt = document.querySelector('#encrypt')
+    function encryptClick() {
+      inputEncrypt.value = SymmetricEncrypt(inputPassword.value, inputCryptkey.value)
+    }
+    function decryptClick() {
+      inputPassword.value = SymmetricDecrypt(inputEncrypt.value, inputCryptkey.value)
+    }
+    /**
+      * Encrypt
+      * 
+      * @param {string} input 
+      * @param {string} key 
+      * @returns {string}
+      */
+    function SymmetricEncrypt(input, key) {
+      if (input === undefined) throw new TypeError('input')
+      if (key === undefined) throw new TypeError('key')
+      const parseKey = CryptoJS.SHA256(key)
+      const iv = CryptoJS.lib.WordArray.random(16)
+
+      const cryptedIV = CryptoJS.AES.encrypt(iv, parseKey, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.NoPadding
+      })
+      const cryptedInput = CryptoJS.AES.encrypt(input, parseKey, { iv })
+      const cryptedIVnInput = CryptoJS.enc.Hex.parse(cryptedIV.ciphertext + cryptedInput.ciphertext)
+      return cryptedIVnInput.toString(CryptoJS.enc.Base64)
+    }
+    /**
+     * Decrypt
+     * 
+     * @param {string} input 
+     * @param {string} key 
+     * @returns {string}
+     */
+    function SymmetricDecrypt(input, key) {
+      if (input === undefined) throw new TypeError('input')
+      if (key === undefined) throw new TypeError('key')
+      const hexIVnInput = CryptoJS.enc.Base64.parse(input).toString()
+      const hexInput = hexIVnInput.slice(32)
+      const hexIV = hexIVnInput.slice(0, 32)
+      const cipherInput = CryptoJS.lib.CipherParams.create({ ciphertext: CryptoJS.enc.Hex.parse(hexInput) })
+      const parseKey = CryptoJS.SHA256(key)
+      const cipherIV = CryptoJS.lib.CipherParams.create({ ciphertext: CryptoJS.enc.Hex.parse(hexIV) })
+
+      const iv = CryptoJS.AES.decrypt(cipherIV, parseKey, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.NoPadding
+      })
+      const decryptedInput = CryptoJS.AES.decrypt(cipherInput, parseKey, { iv })
+      return decryptedInput.toString(CryptoJS.enc.Utf8)
+    }
+  </script>
+</body>
+
+</html>
